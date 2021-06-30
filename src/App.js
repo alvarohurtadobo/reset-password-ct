@@ -24,7 +24,8 @@ function App() {
         setError({ password: "", confirmPassword: "Passwords do not match" });
       } else {
         let bodyPayload = JSON.stringify({ password: newPassword });
-        let url = `http://localhost:3000/api/v1/user/resetPassword/${id}`;
+        // let url = `http://localhost:3000/api/v1/user/resetPassword/${id}`;
+        let url = `http://ct.otfpos.com:3000/api/v1/user/resetPassword/${id}`;
         console.log("URL", url);
         console.log("Sending payload", bodyPayload);
         const requestOptions = {
@@ -43,6 +44,16 @@ function App() {
           .then((response) => response.json())
           .then((data) => {
             console.log("data", data);
+            // {
+            //   "error": false,
+            //   "status": 201,
+            //   "body": {
+            //     "success": true
+            //   }
+            // }
+            if(data&&data.body&&data.body.success){
+              setResponse({success:"Password updated successfully"})
+            }
           })
           .catch((error) => {
             console.log("This error happened", error);
@@ -84,9 +95,9 @@ function App() {
             <TextField
               label="New password"
               type="password"
+              style={{ marginTop: "20px" }}
               error={error.password}
               helperText={error.password}
-              style={{ marginTop: "20px" }}
               onChange={(event) => {
                 if (error.password !== "") {
                   setError({ ...error, password: "" });
