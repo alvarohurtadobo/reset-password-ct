@@ -26,8 +26,7 @@ function App() {
         let bodyPayload = JSON.stringify({ password: newPassword });
         // let url = `http://localhost:3000/api/v1/user/resetPassword/${id}`;
         let url = `http://ct.otfpos.com:3000/api/v1/user/resetPassword/${id}`;
-        console.log("URL", url);
-        console.log("Sending payload", bodyPayload);
+        // console.log("URL", url);
         const requestOptions = {
           method: "PUT",
           headers: {
