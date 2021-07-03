@@ -16,11 +16,11 @@ function App() {
 
   const resetPasswordAttempt = () => {
     if (newPassword.length < 8) {
-      console.log("Password is too short", newPassword);
+      // console.log("Password is too short", newPassword);
       setError({ password: "Password is too short", confirmPassword: "" });
     } else {
       if (newPassword !== confirmPassword) {
-        console.log("Passwords do not match", confirmPassword);
+        // console.log("Passwords do not match", confirmPassword);
         setError({ password: "", confirmPassword: "Passwords do not match" });
       } else {
         let bodyPayload = JSON.stringify({ password: newPassword });
@@ -42,7 +42,7 @@ function App() {
         )
           .then((response) => response.json())
           .then((data) => {
-            console.log("data", data);
+            // console.log("data", data);
             // {
             //   "error": false,
             //   "status": 201,
@@ -50,12 +50,13 @@ function App() {
             //     "success": true
             //   }
             // }
-            if(data&&data.body&&data.body.success){
-              setResponse({success:"Password updated successfully"})
+            if (data && data.body && data.body.success) {
+              console.log("Success");
+              setResponse({ success: "Password updated successfully" });
             }
           })
           .catch((error) => {
-            console.log("This error happened", error);
+            console.log("Unable to update, try again later");
             setResponse({
               failure: "Unable to update, try again later",
             });
@@ -81,81 +82,83 @@ function App() {
           width="100px"
         ></img>
       </AppBar>
-      <Grid container xs={12} justify="center">
-        <Grid container item xs={12} justify="center">
-          <Grid item xs={12} md={3}>
-            <Typography variant="h6" style={{ marginTop: "100px" }}>
-              Enter your new password
-            </Typography>
+      {id && token && (
+        <Grid container xs={12} justify="center">
+          <Grid container item xs={12} justify="center">
+            <Grid item xs={12} md={3}>
+              <Typography variant="h6" style={{ marginTop: "100px" }}>
+                Enter your new password
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container item xs={12} justify="center">
-          <Grid item xs={12} md={3}>
-            <TextField
-              label="New password"
-              type="password"
-              style={{ marginTop: "20px" }}
-              error={error.password}
-              helperText={error.password}
-              onChange={(event) => {
-                if (error.password !== "") {
-                  setError({ ...error, password: "" });
-                }
-                // console.log("New password", event.target.value);
-                newPassword = event.target.value;
-              }}
-            ></TextField>
+          <Grid container item xs={12} justify="center">
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="New password"
+                type="password"
+                style={{ marginTop: "20px" }}
+                error={error.password}
+                helperText={error.password}
+                onChange={(event) => {
+                  if (error.password !== "") {
+                    setError({ ...error, password: "" });
+                  }
+                  // console.log("New password", event.target.value);
+                  newPassword = event.target.value;
+                }}
+              ></TextField>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container item xs={12} justify="center">
-          <Grid item xs={12} md={3}>
-            <TextField
-              label="Confirm new password"
-              type="password"
-              style={{ marginTop: "10px" }}
-              error={error.confirmPassword}
-              helperText={error.confirmPassword}
-              onChange={(event) => {
-                if (error.confirmPassword !== "") {
-                  setError({ ...error, confirmPassword: "" });
-                }
-                // console.log("Confirm password", event.target.value);
-                confirmPassword = event.target.value;
-              }}
-            ></TextField>
+          <Grid container item xs={12} justify="center">
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Confirm new password"
+                type="password"
+                style={{ marginTop: "10px" }}
+                error={error.confirmPassword}
+                helperText={error.confirmPassword}
+                onChange={(event) => {
+                  if (error.confirmPassword !== "") {
+                    setError({ ...error, confirmPassword: "" });
+                  }
+                  // console.log("Confirm password", event.target.value);
+                  confirmPassword = event.target.value;
+                }}
+              ></TextField>
+            </Grid>
           </Grid>
-        </Grid>
-        {response.success && (
-          <Typography
-            variant="caption"
-            color="primary"
-            style={{ margin: "10px" }}
-          >
-            {response.success}
-          </Typography>
-        )}
-        {response.failure && (
-          <Typography
-            variant="caption"
-            color="error"
-            style={{ margin: "10px" }}
-          >
-            {response.failure}
-          </Typography>
-        )}
-        <Grid container item xs={12} justify="center">
-          <Grid item xs={12} md={3}>
-            <Button
-              variant="contained"
-              style={{ marginTop: "50px" }}
+          {response.success && (
+            <Typography
+              variant="caption"
               color="primary"
-              onClick={resetPasswordAttempt}
+              style={{ margin: "10px" }}
             >
-              Update password
-            </Button>
+              {response.success}
+            </Typography>
+          )}
+          {response.failure && (
+            <Typography
+              variant="caption"
+              color="error"
+              style={{ margin: "10px" }}
+            >
+              {response.failure}
+            </Typography>
+          )}
+          <Grid container item xs={12} justify="center">
+            <Grid item xs={12} md={3}>
+              <Button
+                variant="contained"
+                style={{ marginTop: "50px" }}
+                color="primary"
+                onClick={resetPasswordAttempt}
+              >
+                Update password
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
     </div>
   );
 }
